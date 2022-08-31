@@ -19,15 +19,15 @@ class File:
 
 		self.file = File
 
-	def _modify(parameter: str):
+	def _modify(self):
 		"""Convert `filedate.File.set` parameter to Epoch time."""
-		if isinstance(parameter, str):
-			parameter = parse(parameter).timestamp()
+		if isinstance(self, str):
+			self = parse(self).timestamp()
 		try:
-			parameter = parameter // 1
+			self = self // 1
 		except TypeError:
-			parameter = parameter.timestamp()
-		return parameter
+			self = self.timestamp()
+		return self
 		
 
 	def get(self) -> dict:
@@ -69,15 +69,14 @@ class File:
 
 		#---#
 
-		if created:
-			if os.sys.platform.startswith("win"):
-				timestamp = int((created * 1E7) + 116444736E9)
-				ctime = wintypes.FILETIME(timestamp & 0xFFFFFFFF, timestamp >> 32)
-				handle = windll.kernel32.CreateFileW(self.file, 256, 0, None, 3, 128, None)
+		if created and os.sys.platform.startswith("win"):
+			timestamp = int((created * 1E7) + 116444736E9)
+			ctime = wintypes.FILETIME(timestamp & 0xFFFFFFFF, timestamp >> 32)
+			handle = windll.kernel32.CreateFileW(self.file, 256, 0, None, 3, 128, None)
 
-				# Setting Created Time
-				windll.kernel32.SetFileTime(handle, byref(ctime), None, None)
-				windll.kernel32.CloseHandle(handle)
+			# Setting Created Time
+			windll.kernel32.SetFileTime(handle, byref(ctime), None, None)
+			windll.kernel32.CloseHandle(handle)
 
 		#---#
 

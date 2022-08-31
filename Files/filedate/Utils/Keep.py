@@ -5,10 +5,7 @@ from filedate import File
 class Keep:
 	"""Utility for "holding" and "dropping" file dates."""
 	def __init__(self, Files: list):
-		if isinstance(Files, list):
-			Files = list(Files)
-		else:
-			Files = [Files]
+		Files = list(Files) if isinstance(Files, list) else [Files]
 		#---#
 		self.files = Files
 
@@ -17,7 +14,7 @@ class Keep:
 		self.__dates = {}
 
 		for Path in self.files:
-			self.__dates.update({Path: File(Path).get()})
+			self.__dates[Path] = File(Path).get()
 
 	def drop(self):
 		"""Drop the files dates."""
